@@ -36,17 +36,23 @@ class DeliveryTest {
         $("[data-test-id=agreement]").click();
         $x("//*[contains(text(), 'Запланировать')]").click();
 
-        $x("//*[@data-test-id='success-notification']").shouldBe(visible).shouldHave(Condition.matchText(firstMeetingDate));
+        $x("//*[@data-test-id='success-notification']//*[@class='notification__content']")
+                .shouldBe(visible)
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + firstMeetingDate));
         $x("//*[@data-test-id='success-notification']//button").click();
 
         $("[data-test-id=date] input").sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
         $("[data-test-id=date] input").setValue(secondMeetingDate);
         $x("//*[contains(text(), 'Запланировать')]").click();
 
-        $x("//*[@data-test-id='replan-notification']").shouldBe(visible).shouldHave(Condition.matchText("подтверждение"));
+        $x("//*[@data-test-id='replan-notification']//*[@class='notification__content']")
+                .shouldBe(visible)
+                .shouldHave(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
         $x("//*[@data-test-id='replan-notification']//button[not(contains(@class, 'notification__closer'))]").click();
 
-        $x("//*[@data-test-id='success-notification']").shouldBe(visible).shouldHave(Condition.matchText(secondMeetingDate));
+        $x("//*[@data-test-id='success-notification']//*[@class='notification__content']")
+                .shouldBe(visible)
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + secondMeetingDate));
         $x("//*[@data-test-id='success-notification']//button").click();
     }
 }
